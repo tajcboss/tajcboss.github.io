@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Hi3</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pour Salma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght@400;700&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+            font-family: 'Montserrat', sans-serif; touch-action: none; 
+            background: url('https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?q=80&w=2574&auto=format&fit=crop') no-repeat center center fixed; 
+            background-size: cover;
+        }
+
+        .overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(40,0,80,0.5), rgba(0,0,40,0.7));
+            z-index: 0; pointer-events: none;
+        }
+
+        #slideshow-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
+        }
+        .bg-slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 3s ease-in-out; mix-blend-mode: screen; 
+        }
+
+        #slide1 { background-image: url('https://images.unsplash.com/photo-1518066000714-58c45f1a2c0a?q=80&w=2070&auto=format&fit=crop'); }
+        #slide2 { background-image: url('https://images.unsplash.com/photo-1604606523689-a3dd13c47124?q=80&w=2071&auto=format&fit=crop'); }
+        #slide3 { background-image: url('https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=2070&auto=format&fit=crop'); }
+
+        #canvas { position: absolute; top: 0; left: 0; z-index: 5; pointer-events: none; }
+
+        #intro-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; pointer-events: none; }
+        .floating-letter {
+            position: absolute; font-family: 'Fredoka One', cursive; font-size: 3.5rem; color: #fff;
+            text-shadow: 0 0 20px #FF1461, 0 0 40px #FF1461;
+            transition: all 2s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; 
+        }
+
+        #loading-text {
+            position: absolute; bottom: 15%; width: 100%; text-align: center;
+            color: rgba(255, 255, 255, 0.9); font-size: 1.2rem; font-style: italic;
+            text-shadow: 0 0 10px rgba(100, 200, 255, 0.8); opacity: 0; transition: opacity 1s ease-in-out;
+            z-index: 15; pointer-events: none;
+        }
+
+        .center-stage {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 30; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;
+        }
+
+        .magic-icon {
+            font-size: 110px; cursor: pointer; display: none; user-select: none;
+            filter: drop-shadow(0 0 30px rgba(255,255,255,0.8)); transition: transform 0.2s;
+            animation: floatIcon 3s ease-in-out infinite; touch-action: manipulation; 
+        }
+        
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* --- NOUVEAU : INDICATION SUBTILE --- */
+        .hint-text {
+            color: #fff; font-size: 1rem; margin-top: 10px; opacity: 0;
+            font-family: 'Montserrat', sans-serif; letter-spacing: 1px;
+            animation: pulseText 2s infinite; display: none; /* Caché par défaut */
+            text-shadow: 0 0 5px rgba(255,255,255,0.8); pointer-events: none;
+        }
+        @keyframes pulseText {
+            0% { opacity: 0.4; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.4; transform: scale(0.95); }
+        }
+
+        .speech-bubble {
+            position: relative; background: rgba(255, 255, 255, 0.95); border-radius: 25px; padding: 25px;
+            text-align: center; color: #2c003e; font-family: 'Comic Neue', cursive; font-weight: bold; font-size: 1.4rem;
+            width: 85%; max-width: 320px; box-shadow: 0 0 40px rgba(255, 50, 150, 0.6);
+            border: 4px solid #2c003e; margin-bottom: 20px; opacity: 0; transform: scale(0);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .speech-bubble::after {
+            content: ''; position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+            border-width: 20px 20px 0; border-style: solid; border-color: #fff transparent; filter: drop-shadow(0 4px 0 #2c003e);
+        }
+        .show-bubble { opacity: 1 !important; transform: scale(1) !important; }
+
+        @media (max-width: 600px) {
+            .floating-letter { font-size: 2.2rem; }
+            #loading-text { font-size: 1rem; bottom: 20%; }
+        }
+    </style>
+</head>
+<body>
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/10/25/audio_5e9664610e.mp3?filename=magical-moments-118694.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="overlay"></div> 
+    <div id="slideshow-container">
+        <div id="slide1" class="bg-slide"></div>
+        <div id="slide2" class="bg-slide"></div>
+        <div id="slide3" class="bg-slide"></div>
+    </div>
+    <div id="intro-container"></div>
+    <canvas id="canvas"></canvas>
+    <div id="loading-text">Patience... la magie opère ✨</div>
+
+    <div class="center-stage">
+        <div id="final-message" class="speech-bubble">
+            👋 Salut Salma !<br><br>
+            On est dans la même salle...<br>
+            Je n'ai jamais trouvé le bon moment pour te dire bonjour. 🙈<br>
+            Alors je commence ici ! 😊
+        </div>
+
+        <div id="gift-box" class="magic-icon">🎁</div>
+        <div id="gift-hint" class="hint-text">Ouvre-moi ✨</div>
+
+        <div id="little-man" class="magic-icon">🧞‍♂️</div>
+        <div id="man-hint" class="hint-text">Touche le génie ✨</div>
+    </div>
+
+    <script>
+        // --- MOTEUR GRAPHIQUE ---
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [], fireflies = [];
+
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; initFireflies(); }
+        window.addEventListener('resize', resize);
+        
+        function initFireflies() {
+            fireflies = [];
+            for(let i=0; i<40; i++) {
+                fireflies.push({ x: Math.random() * width, y: Math.random() * height, radius: Math.random() * 2, speedX: (Math.random() - 0.5) * 0.5, speedY: (Math.random() - 0.5) * 0.5, alpha: Math.random() });
+            }
+        }
+        resize(); 
+
+        const colors = ['#FF1461', '#18FF92', '#5A87FF', '#FBF38C', '#FF9C33'];
+        function createExplosion(x, y, amount = 100) {
+            for (let i = 0; i < amount; i++) {
+                particles.push({ x: x, y: y, angle: Math.random() * Math.PI * 2, speed: Math.random() * 6 + 2, radius: Math.random() * 3 + 1, color: colors[Math.floor(Math.random() * colors.length)], life: 150, decay: Math.random() * 0.02 + 0.015, gravity: 0.04 });
+            }
+        }
+
+        function update() {
+            ctx.clearRect(0, 0, width, height); 
+            ctx.globalCompositeOperation = 'source-over';
+            fireflies.forEach(f => {
+                f.x += f.speedX; f.y += f.speedY; if(f.x < 0 || f.x > width) f.speedX *= -1; if(f.y < 0 || f.y > height) f.speedY *= -1;
+                f.alpha += (Math.random() - 0.5) * 0.05; f.alpha = Math.max(0, Math.min(1, f.alpha));
+                ctx.beginPath(); ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 200, ${f.alpha})`; ctx.fill();
+            });
+            ctx.globalCompositeOperation = 'lighter';
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i]; p.x += Math.cos(p.angle) * p.speed; p.y += Math.sin(p.angle) * p.speed + p.gravity;
+                p.speed *= 0.96; p.life -= 1; p.radius -= p.decay;
+                if (p.life <= 0 || p.radius <= 0) { particles.splice(i, 1); i--; continue; }
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fillStyle = p.color; ctx.fill();
+            }
+            requestAnimationFrame(update);
+        }
+        update();
+
+        // --- SCÉNARIO ---
+        const introContainer = document.getElementById('intro-container');
+        const loadingText = document.getElementById('loading-text');
+        const phrase = "SALUT SALMA"; 
+        
+        function startIntro() {
+            const centerX = window.innerWidth / 2; const centerY = window.innerHeight / 2;
+            const isMobile = window.innerWidth < 600; const spacing = isMobile ? 35 : 60; 
+            const startX = centerX - ((phrase.length * spacing) / 2) + (spacing/2);
+
+            for (let i = 0; i < phrase.length; i++) {
+                const char = phrase[i]; if(char === " ") continue; 
+                const span = document.createElement('span'); span.textContent = char; span.classList.add('floating-letter');
+                span.style.left = (Math.random() * window.innerWidth) + 'px'; span.style.top = (Math.random() * window.innerHeight) + 'px'; span.style.opacity = 1;
+                introContainer.appendChild(span);
+                setTimeout(() => { span.style.left = (startX + (i * spacing)) + 'px'; span.style.top = centerY + 'px'; span.style.transform = 'translate(-50%, -50%)'; }, 1500);
+            }
+
+            setTimeout(() => { introContainer.style.opacity = 0; loadingText.style.opacity = 1; startDiaporama(); }, 6000);
+        }
+
+        const slides = [document.getElementById('slide1'), document.getElementById('slide2'), document.getElementById('slide3')];
+        function startDiaporama() {
+            let currentSlide = 0;
+            function nextSlide() {
+                if (currentSlide < slides.length) {
+                    if(currentSlide > 0) slides[currentSlide - 1].style.opacity = 0;
+                    slides[currentSlide].style.opacity = 0.8; currentSlide++;
+                }
+            }
+            setTimeout(nextSlide, 1000); setTimeout(nextSlide, 7000); setTimeout(nextSlide, 14000);
+            
+            setTimeout(() => {
+                if(currentSlide > 0) slides[currentSlide - 1].style.opacity = 0;
+                loadingText.style.opacity = 0; 
+                // Affiche le cadeau ET l'indication
+                document.getElementById('gift-box').style.display = 'block';
+                document.getElementById('gift-hint').style.display = 'block';
+                createExplosion(width/2, height/2, 50);
+            }, 21000); 
+        }
+
+        // --- INTERACTIONS ---
+        const music = document.getElementById('bg-music'); music.volume = 0.6;
+        const giftBox = document.getElementById('gift-box');
+        const littleMan = document.getElementById('little-man');
+        const messageBubble = document.getElementById('final-message');
+        const giftHint = document.getElementById('gift-hint');
+        const manHint = document.getElementById('man-hint');
+
+        function handleGiftClick(e) {
+            music.play().catch(() => {});
+            let rect = e.target.getBoundingClientRect(); createExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2, 100);
+            
+            // Masquer cadeau et son indication
+            giftBox.style.display = 'none';
+            giftHint.style.display = 'none';
+            
+            // Afficher le bonhomme et son indication
+            littleMan.style.display = 'block';
+            manHint.style.display = 'block';
+        }
+        giftBox.addEventListener('click', handleGiftClick);
+        giftBox.addEventListener('touchstart', function(e) { e.preventDefault(); handleGiftClick(e); });
+
+        function handleManClick(e) {
+            let rect = e.target.getBoundingClientRect();
+            createExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2, 150); createExplosion(width/2, height/3, 100);
+            
+            // Masquer l'indication du bonhomme
+            manHint.style.display = 'none';
+            messageBubble.classList.add('show-bubble');
+            
+            setInterval(() => { createExplosion(Math.random() * width, Math.random() * height * 0.7, 80); }, 800);
+            littleMan.style.pointerEvents = 'none';
+        }
+        littleMan.addEventListener('click', handleManClick);
+        littleMan.addEventListener('touchstart', function(e) { e.preventDefault(); handleManClick(e); });
+
+        startIntro();
+    </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>
