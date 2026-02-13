@@ -80,7 +80,7 @@
         /* BULLE DE TEXTE AMÉLIORÉE */
         .speech-bubble {
             position: relative; background: rgba(255, 255, 255, 0.95); border-radius: 25px; padding: 25px;
-            text-align: left; /* Texte aligné à gauche pour la liste */
+            text-align: left; 
             color: #2c003e; font-family: 'Comic Neue', cursive; font-weight: bold; font-size: 1.1rem;
             width: 85%; max-width: 340px; box-shadow: 0 0 40px rgba(255, 50, 150, 0.6);
             border: 4px solid #2c003e; margin-bottom: 20px; opacity: 0; transform: scale(0);
@@ -103,7 +103,7 @@
 </head>
 <body>
     <audio id="bg-music" loop preload="auto">
-        <source src="musique.mp3" type="audio/mpeg">
+        <source src="music1.mp3" type="audio/mpeg">
     </audio>
 
     <div class="overlay"></div> 
@@ -252,4 +252,3 @@
     </script>
 </body>
 </html>
-
