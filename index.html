@@ -1,11 +1,9 @@
-</body>
-</html>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pour Manoella</title>
+    <title>Pour Salma</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght@400;700&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
     <style>
         body, html {
@@ -39,7 +37,7 @@
 
         #intro-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; pointer-events: none; }
         .floating-letter {
-            position: absolute; font-family: 'Fredoka One', cursive; font-size: 2.8rem; color: #fff;
+            position: absolute; font-family: 'Fredoka One', cursive; font-size: 3rem; color: #fff;
             text-shadow: 0 0 20px #FF1461, 0 0 40px #FF1461;
             transition: all 2s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; 
         }
@@ -67,6 +65,7 @@
             50% { transform: translateY(-15px); }
         }
 
+        /* INDICATION SUBTILE */
         .hint-text {
             color: #fff; font-size: 1rem; margin-top: 10px; opacity: 0;
             font-family: 'Montserrat', sans-serif; letter-spacing: 1px;
@@ -79,12 +78,10 @@
             100% { opacity: 0.4; transform: scale(0.95); }
         }
 
-        /* BULLE DE TEXTE AMÉLIORÉE */
         .speech-bubble {
             position: relative; background: rgba(255, 255, 255, 0.95); border-radius: 25px; padding: 25px;
-            text-align: left; /* Texte aligné à gauche pour la liste */
-            color: #2c003e; font-family: 'Comic Neue', cursive; font-weight: bold; font-size: 1.1rem;
-            width: 85%; max-width: 340px; box-shadow: 0 0 40px rgba(255, 50, 150, 0.6);
+            text-align: center; color: #2c003e; font-family: 'Comic Neue', cursive; font-weight: bold; font-size: 1.3rem;
+            width: 85%; max-width: 320px; box-shadow: 0 0 40px rgba(255, 50, 150, 0.6);
             border: 4px solid #2c003e; margin-bottom: 20px; opacity: 0; transform: scale(0);
             transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -93,19 +90,16 @@
             border-width: 20px 20px 0; border-style: solid; border-color: #fff transparent; filter: drop-shadow(0 4px 0 #2c003e);
         }
         .show-bubble { opacity: 1 !important; transform: scale(1) !important; }
-        
-        .wish-list { list-style: none; padding: 0; margin: 10px 0; }
-        .wish-list li { margin-bottom: 8px; }
 
         @media (max-width: 600px) {
-            .floating-letter { font-size: 1.8rem; }
+            .floating-letter { font-size: 2rem; } 
             #loading-text { font-size: 1rem; bottom: 20%; }
         }
     </style>
 </head>
 <body>
     <audio id="bg-music" loop preload="auto">
-        <source src="musique.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/10/25/audio_5e9664610e.mp3?filename=magical-moments-118694.mp3" type="audio/mpeg">
     </audio>
 
     <div class="overlay"></div> 
@@ -120,14 +114,9 @@
 
     <div class="center-stage">
         <div id="final-message" class="speech-bubble">
-            Salut Manoella ! 🧞‍♂️<br>
-            Antoine-Marie a frotté la lampe et a fait 3 vœux pour toi :<br><br>
-            <ul class="wish-list">
-                <li>1️⃣ Que ta journée soit aussi pétillante que toi. ✨</li>
-                <li>2️⃣ Que tu réussisses tout ce que tu entreprends cette année. 🚀</li>
-                <li>3️⃣ Et surtout... trouver une façon magique de te dire "Joyeuse Saint-Valentin". 🌹</li>
-            </ul>
-            <div style="text-align:center; margin-top:10px;">Vœux exaucés ! ✅</div>
+            Salut Salma ! 🧞‍♂️<br><br>
+            Antoine-Marie a fait le vœu de te connaître.<br><br>
+            Comme il est un peu impressionné, c'est moi qui fais les présentations ! ✨
         </div>
 
         <div id="gift-box" class="magic-icon">🎁</div>
@@ -183,20 +172,25 @@
         // --- SCÉNARIO ---
         const introContainer = document.getElementById('intro-container');
         const loadingText = document.getElementById('loading-text');
-        const phrase = "SALUT MANOELLA"; 
+        const phrase = "SALUT SALMA"; 
         
         function startIntro() {
             const centerX = window.innerWidth / 2; const centerY = window.innerHeight / 2;
-            let spacing = Math.min(window.innerWidth / (phrase.length + 1), 40); 
+            
+            // Calcul amélioré pour centrage sur mobile
+            let spacing = Math.min(window.innerWidth / (phrase.length + 1), 50); 
             const startX = centerX - ((phrase.length * spacing) / 2) + (spacing/2);
 
             for (let i = 0; i < phrase.length; i++) {
                 const char = phrase[i]; if(char === " ") continue; 
                 const span = document.createElement('span'); span.textContent = char; span.classList.add('floating-letter');
+                
                 span.style.left = (Math.random() * window.innerWidth) + 'px'; span.style.top = (Math.random() * window.innerHeight) + 'px'; span.style.opacity = 1;
                 introContainer.appendChild(span);
+                
                 setTimeout(() => { span.style.left = (startX + (i * spacing)) + 'px'; span.style.top = centerY + 'px'; span.style.transform = 'translate(-50%, -50%)'; }, 1500);
             }
+
             setTimeout(() => { introContainer.style.opacity = 0; loadingText.style.opacity = 1; startDiaporama(); }, 6000);
         }
 
@@ -231,8 +225,10 @@
         function handleGiftClick(e) {
             music.play().catch(() => {});
             let rect = e.target.getBoundingClientRect(); createExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2, 100);
+            
             giftBox.style.display = 'none';
             giftHint.style.display = 'none';
+            
             littleMan.style.display = 'block';
             manHint.style.display = 'block';
         }
@@ -242,8 +238,10 @@
         function handleManClick(e) {
             let rect = e.target.getBoundingClientRect();
             createExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2, 150); createExplosion(width/2, height/3, 100);
+            
             manHint.style.display = 'none';
             messageBubble.classList.add('show-bubble');
+            
             setInterval(() => { createExplosion(Math.random() * width, Math.random() * height * 0.7, 80); }, 800);
             littleMan.style.pointerEvents = 'none';
         }
